@@ -10,11 +10,11 @@
 #include "c13Lucas.h"
 
 void initC13ByInput() {
-    long q; // 奇素数
-    long x, y; // 整数x&y
-    long k; // 正整数k
+    long q;     // 奇素数
+    long x, y;  // 整数x&y
+    long k;     // 正整数k
 
-    printf("please 输入：奇素数q，整数X和Y，正整数k(like '7 5 6 9' without \"'\")\n");
+    printf("please 输入：奇素数q，整数X和Y，正整数k(like '7 1 2 3' without \"'\")\n");
     char qStr[10], xStr[10], yStr[10], kStr[10];
     scanf("%s %s %s %s", qStr, xStr, yStr, kStr);
     q = strtol(qStr, NULL, 10);
@@ -30,7 +30,6 @@ void initC13ByInput() {
 
 void countRet(long q, long x, long y, long k, long ret[2]) {
     long u, v; // result
-
     // a) 置∆=X*X - 4Y
     long tmp = x * x - 4 * y;
     printf("∆ = X*X - 4Y = %ld\n", tmp);
@@ -42,15 +41,15 @@ void countRet(long q, long x, long y, long k, long ret[2]) {
     // c) 置U=1，V= X；
     u = 1, v = x;
     // d) 对i从r-1降至0执行：
-    // d.1) 置(U,V)=( (U·V)mod q, ((V*V +∆·U 2 )/2) mod q )；
+    // d.1) 置(U,V)=( (U·V)mod q, ((V*V +∆·U*U )/2) mod q )；
     // d.2) 若k i = 1，则置(U,V)=( ((X·U+V)/2)mod q, ((X·V +∆·U)/2)mod q ) ；
     int kBinLen = (int) strlen(kBin);
-    printf("\nr-1 = %d\n", kBinLen - 1);
+    printf("\nr-1 = %d\n", (kBinLen - 1) - 1);
     for (int i = 1; i < kBinLen; i++) {
-        printf("k%d:%c\t((U·V) mod q, ((V·V +∆·U 2 )/2) mod q) = ", kBinLen - 1 - i, kBin[i]);
+        printf("k%d:%c\t((U·V) mod q, ((V·V +∆·U*U )/2) mod q) = ", kBinLen - 1 - i, kBin[i]);
         long tmpU = u;
         u = u * v % q;
-        v = (v * v + tmp * tmpU) / 2 % q;
+        v = (v * v + tmp * tmpU * tmpU) / 2 % q;
         printf("(U:%ld, V:%ld)\n", u, v);
         if (kBin[i] == '1') {
             tmpU = u;
@@ -60,10 +59,14 @@ void countRet(long q, long x, long y, long k, long ret[2]) {
             printf("(U:%ld, V:%ld)\n", u, v);
         }
     }
+    if (u < 0) u += q;
+    if (v < 0) v += q;
     printf("Result\tU:%ld\tV:%ld\n", u, v);
 
-    ret[0] = u;
-    ret[1] = v;
+    if (ret != NULL) {
+        ret[0] = u;
+        ret[1] = v;
+    }
 }
 
 void handleC13() {
@@ -71,6 +74,6 @@ void handleC13() {
 //    clearC13BeforeBack();
 }
 
-void handleC13WithData(long q, long x, long y, long k, long ret[2]){
+void handleC13WithData(long q, long x, long y, long k, long ret[2]) {
     countRet(q, x, y, k, ret);
 }
