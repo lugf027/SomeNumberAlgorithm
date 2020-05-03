@@ -8,6 +8,7 @@
 #include <string.h>
 
 #include "c13Lucas.h"
+#include "util.h"
 
 void initC13ByInput() {
     long q;     // 奇素数
@@ -17,15 +18,17 @@ void initC13ByInput() {
     printf("please 输入：奇素数q，整数X和Y，正整数k(like '7 1 2 3' without \"'\")\n");
     char qStr[10], xStr[10], yStr[10], kStr[10];
     scanf("%s %s %s %s", qStr, xStr, yStr, kStr);
-    q = strtol(qStr, NULL, 10);
-    x = strtol(xStr, NULL, 10);
-    y = strtol(yStr, NULL, 10);
-    k = strtol(kStr, NULL, 10);
-    if (!(q > 0 && k > 0)) {
-        printf("input invalid!");
-        return;
+
+    if (judgeCharListIsAllNum(qStr) && judgeCharListIsAllNum(xStr) && judgeCharListIsAllNum(yStr) &&
+        judgeCharListIsAllNum(kStr)) {
+        q = strtol(qStr, NULL, 10);
+        x = strtol(xStr, NULL, 10);
+        y = strtol(yStr, NULL, 10);
+        k = strtol(kStr, NULL, 10);
+        countRet(q, x, y, k, NULL);
+    } else {
+        printf("input invalid!\n\n");
     }
-    countRet(q, x, y, k, NULL);
 }
 
 void countRet(long q, long x, long y, long k, long ret[2]) {

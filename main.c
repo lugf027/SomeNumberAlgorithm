@@ -15,6 +15,10 @@ int main() {
     while (1) {
         printf("Please input what you want to do:\n");
         printf("A、 C.1.1 Exponential operation in finite field\n");
+        printf("B、 C.1.3 Lucas\n");
+        printf("C、 C.1.4 method1 via q≡3 (mod 4)\n");
+        printf("D、 C.1.4 method2 via q≡5 (mod 8)\n");
+        printf("E、 C.1.4 method3 via Lucas\n");
         scanf("%s", type);
         if (strlen(type) > 1) { // invalid input found
             continue;

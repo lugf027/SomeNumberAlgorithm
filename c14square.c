@@ -5,33 +5,35 @@
 *********************************************/
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 #include <time.h>
 
 #include "c14square.h"
 #include "c11exponent.h"
 #include "c13Lucas.h"
+#include "util.h"
 
 void initC14ByInput(int type) {
     char qStr[10], gStr[10];
     printf("输入 ：奇素数q，整数g, 0<g<q");
     scanf("%s %s", qStr, gStr);
-    long q = strtol(qStr, NULL, 10);
-    long g = strtol(gStr, NULL, 10);
-    if (!(q > 0 && g > 0)) {
-        printf("input invalid!");
-        return;
-    } else if (g == 0) {
-        printf("y: 0"); // 若g=0，则只有一个平方根，即y=0；
-        return;
-    }
 
-    if (type == 1) {
-        method1(q, g);
-    } else if (type == 2) {
-        method2(q, g);
-    } else if (type == 3) {
-        method3(q, g);
+    if (judgeCharListIsAllNum(qStr) && judgeCharListIsAllNum(gStr)) {
+        long q = strtol(qStr, NULL, 10);
+        long g = strtol(gStr, NULL, 10);
+        if (g == 0) {
+            printf("y: 0"); // 若g=0，则只有一个平方根，即y=0；
+            return;
+        }
+
+        if (type == 1) {
+            method1(q, g);
+        } else if (type == 2) {
+            method2(q, g);
+        } else if (type == 3) {
+            method3(q, g);
+        }
+    } else {
+        printf("input invalid!\n\n");
     }
 }
 

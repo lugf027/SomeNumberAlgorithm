@@ -9,6 +9,7 @@
 #include <string.h>
 
 #include "c11exponent.h"
+#include "util.h"
 
 long initC11ByInput() {
     long a; // 正整数
@@ -18,16 +19,18 @@ long initC11ByInput() {
     printf("please input integer in sequence: a(Positive) Fq(Field) g(Field element)\n");
     char aStr[10], fqStr[10], gStr[10];
     scanf("%s %s %s", aStr, fqStr, gStr);
-    a = strtol(aStr, NULL, 10);
-    fq = strtol(fqStr, NULL, 10);
-    g = strtol(gStr, NULL, 10);
 
-    if (!(a > 0 && fq > 0 && g > 0)) {
-        printf("input invalid!");
+    if(judgeCharListIsAllNum(aStr) && judgeCharListIsAllNum(fqStr) && judgeCharListIsAllNum(gStr)){
+        a = strtol(aStr, NULL, 10);
+        fq = strtol(fqStr, NULL, 10);
+        g = strtol(gStr, NULL, 10);
+
+        printf("((long long)pow(g:%ld, a:%ld)) mod fq:%ld = %lld\n", g, a, fq, ((long long)pow(g, a)) %fq);
+        return convertE(a, fq, g);
+    }else{
+        printf("input invalid!\n\n");
         return -1;
     }
-    printf("((long long)pow(g:%ld, a:%ld)) mod fq:%ld = %lld\n", g, a, fq, ((long long)pow(g, a)) %fq);
-    return convertE(a, fq, g);
 }
 
 long convertE(long a, long fq, long g) {
