@@ -32,6 +32,7 @@ void initC13ByInput() {
 }
 
 void countRet(long q, long x, long y, long k, long ret[2]) {
+    printf("%ld\t%ld\t%ld\t%ld\n", q, x, y, k);
     // 生成式
     long us[k + 1], vs[k + 1];
     us[0] = 0, us[1] = 1;
@@ -46,31 +47,31 @@ void countRet(long q, long x, long y, long k, long ret[2]) {
     long u, v; // result
     // a) 置∆=X*X - 4Y
     long tmp = x * x - 4 * y;
-    printf("∆ = X*X - 4Y = %ld\t\t", tmp);
+//    printf("∆ = X*X - 4Y = %ld\t\t", tmp);
     // b) k二进制kBin -> Kr Kr-1 ... K1 K0
     char buffer[33];
     int base = 2;
     char *kBin = lltoa(k, buffer, base);
-    printf("kBin = %s\n", kBin);
+//    printf("kBin = %s\n", kBin);
     // c) 置U=1，V= X；
     u = 1, v = x;
     // d) 对i从r-1降至0执行：
     // d.1) 置(U,V)=( (U·V)mod q, ((V*V +∆·U*U )/2) mod q )；
     // d.2) 若k i = 1，则置(U,V)=( ((X·U+V)/2)mod q, ((X·V +∆·U)/2)mod q ) ；
     int kBinLen = (int) strlen(kBin);
-    printf("\nr-1 = %d\n", (kBinLen - 1) - 1);
+//    printf("\nr-1 = %d\n", (kBinLen - 1) - 1);
     for (int i = 1; i < kBinLen; i++) {
-        printf("k%d:%c\t((U·V) mod q, ((V·V +∆·U*U )/2) mod q) = ", kBinLen - 1 - i, kBin[i]);
+//        printf("k%d:%c\t((U·V) mod q, ((V·V +∆·U*U )/2) mod q) = ", kBinLen - 1 - i, kBin[i]);
         long tmpU = u;
         u = u * v % q;
         v = (v * v + tmp * tmpU * tmpU) / 2 % q;
-        printf("(U:%ld, V:%ld)\n", u, v);
+//        printf("(U:%ld, V:%ld)\n", u, v);
         if (kBin[i] == '1') {
             tmpU = u;
-            printf("\t\t((X·U+V)/2) mod q, ((X·V +∆·U)/2) mod q) = ");
+//            printf("\t\t((X·U+V)/2) mod q, ((X·V +∆·U)/2) mod q) = ");
             u = (x * u + v) / 2 % q;
             v = (x * v + tmp * tmpU) / 2 % q;
-            printf("(U:%ld, V:%ld)\n", u, v);
+//            printf("(U:%ld, V:%ld)\n", u, v);
         }
     }
 //    if (u < 0) u += q;
@@ -89,5 +90,15 @@ void handleC13() {
 }
 
 void handleC13WithData(long q, long x, long y, long k, long ret[2]) {
-    countRet(q, x, y, k, ret);
+    // 生成式
+    long us[k + 1], vs[k + 1];
+    us[0] = 0, us[1] = 1;
+    vs[0] = 2, vs[1] = x;
+    for (long i = 2; i <= k; i++) {
+        us[i] = x * us[i - 1] - y * us[i - 2];
+        vs[i] = x * vs[i - 1] - y * vs[i - 2];
+    }
+    printf("u[%ld]:%ld\tv[%ld]:%ld\n", k, us[k] % q, k, vs[k] % q);
+    ret[0] = us[k] % q < 0 ? us[k] % q + q : us[k] % q;
+    ret[1] = vs[k] % q < 0 ? vs[k] % q + q : vs[k] % q;
 }

@@ -14,7 +14,7 @@
 
 void initC14ByInput(int type) {
     char qStr[10], gStr[10];
-    printf("输入 ：奇素数q，整数g, 0<=g<q");
+    printf("输入 ：奇素数q，整数g, 0<=g<q\n");
     scanf("%s %s", qStr, gStr);
 
     if (judgeCharListIsAllNum(qStr) && judgeCharListIsAllNum(gStr)) {
@@ -89,19 +89,19 @@ void method3(long q, long g) {
     long u = q / 8;
     long Y = g;
     while (1) {
-        srand((int) time(NULL));
+        srand((unsigned int )time(NULL) );
         int X = rand() % (int) q;
         printf("random X:\t%d\n", X);
         long uAndV[2];
         handleC13WithData(q, X, Y, 4 * u + 1, uAndV);
         printf("u:%ld\tv:%ld\n", uAndV[0], uAndV[1]);
 
-        if (uAndV[1] * uAndV[1] % q == 4 * Y % q) {
+        if ((uAndV[1] * uAndV[1]) % q == (4 * Y) % q) {
             long y = uAndV[1] / 2 % q;
             printf("y:%ld\n", y);
             return;
         } else if (uAndV[0] % q != 1 && uAndV[0] % q != q - 1) {
-            printf("不存在平方根");
+            printf("不存在平方根\n");
             return;
         }
     }
