@@ -32,10 +32,21 @@ void initC13ByInput() {
 }
 
 void countRet(long q, long x, long y, long k, long ret[2]) {
+    // 生成式
+    long us[k + 1], vs[k + 1];
+    us[0] = 0, us[1] = 1;
+    vs[0] = 2, vs[1] = x;
+    for (long i = 2; i <= k; i++) {
+        us[i] = x * us[i - 1] - y * us[i - 2];
+        vs[i] = x * vs[i - 1] - y * vs[i - 2];
+    }
+    printf("u[%ld]:%ld\tv[%ld]:%ld\n", k, us[k] % q, k, vs[k] % q);
+
+
     long u, v; // result
     // a) 置∆=X*X - 4Y
     long tmp = x * x - 4 * y;
-    printf("∆ = X*X - 4Y = %ld\n", tmp);
+    printf("∆ = X*X - 4Y = %ld\t\t", tmp);
     // b) k二进制kBin -> Kr Kr-1 ... K1 K0
     char buffer[33];
     int base = 2;
@@ -62,9 +73,9 @@ void countRet(long q, long x, long y, long k, long ret[2]) {
             printf("(U:%ld, V:%ld)\n", u, v);
         }
     }
-    if (u < 0) u += q;
-    if (v < 0) v += q;
-    printf("Result\tU:%ld\tV:%ld\n", u, v);
+//    if (u < 0) u += q;
+//    if (v < 0) v += q;
+    printf("Result\tU:%ld\tV:%ld\n\n", u, v);
 
     if (ret != NULL) {
         ret[0] = u;

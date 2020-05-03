@@ -14,7 +14,7 @@
 
 void initC14ByInput(int type) {
     char qStr[10], gStr[10];
-    printf("输入 ：奇素数q，整数g, 0<g<q");
+    printf("输入 ：奇素数q，整数g, 0<=g<q");
     scanf("%s %s", qStr, gStr);
 
     if (judgeCharListIsAllNum(qStr) && judgeCharListIsAllNum(gStr)) {
@@ -51,9 +51,9 @@ void method1(long q, long g) {
     long y = handleC11WithDate(u + 1, q, g);
     long z = y * y % q;
     if (z == g) {
-        printf("y:%ld", y);
+        printf("y:%ld\n", y);
     } else {
-        printf("不存在平方根");
+        printf("不存在平方根\n");
     }
 }
 
@@ -65,13 +65,16 @@ void method2(long q, long g) {
     //d) 输出“不存在平方根”
     long u = q / 8;
     long z = handleC11WithDate(u + u + 1, q, g);
-    if (z % q == -1 % q) {
+    if (z % q == -1 % q || z % q == -1 % q + q) {
         long tmpY1 = handleC11WithDate(u, q, 4 * g);
         long tmpY2 = (g + g) % q;
         long y = (tmpY1 + tmpY2) % q;
-        printf("y:%ld", y);
-    } else {
-        printf("不存在平方根");
+        printf("y:%ld\n", y);
+    } else if(z % q == 1 % q){
+        long y = handleC11WithDate(u+1, q, g);
+        printf("y:%ld\n", y);
+    }else{
+        printf("不存在平方根\n");
     }
 }
 
@@ -95,7 +98,7 @@ void method3(long q, long g) {
 
         if (uAndV[1] * uAndV[1] % q == 4 * Y % q) {
             long y = uAndV[1] / 2 % q;
-            printf("y:%ld", y);
+            printf("y:%ld\n", y);
             return;
         } else if (uAndV[0] % q != 1 && uAndV[0] % q != q - 1) {
             printf("不存在平方根");
