@@ -1,9 +1,3 @@
-/********************************************
-* c14square.h                              *
-* Created by lugf027 on 2020/5/2.            *
-* Github: https://github.com/lugf027        *
-*********************************************/
-
 #ifndef SOMENUMBERALGORITHM_C14SQUARE_H
 #define SOMENUMBERALGORITHM_C14SQUARE_H
 
@@ -18,5 +12,3 @@ void method1(long q, long g);
 void method2(long q, long g);
 
 void method3(long q, long g);
-
-//void clearC14BeforeBack();

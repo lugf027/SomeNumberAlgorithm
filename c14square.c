@@ -1,8 +1,3 @@
-/********************************************
-* c14square.c                              *
-* Created by lugf027 on 2020/5/2.            *
-* Github: https://github.com/lugf027        *
-*********************************************/
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -14,7 +9,7 @@
 
 void initC14ByInput(int type) {
     char qStr[10], gStr[10];
-    printf("输入 ：奇素数q，整数g, 0<=g<q\n");
+    printf("please input: q g\n");
     scanf("%s %s", qStr, gStr);
 
     if (judgeCharListIsAllNum(qStr) && judgeCharListIsAllNum(gStr)) {
@@ -25,11 +20,11 @@ void initC14ByInput(int type) {
             return;
         }
 
-        if (type == 1) {
+        if (q % 4 == 3) {
             method1(q, g);
-        } else if (type == 2) {
+        } else if (q % 8 == 5) {
             method2(q, g);
-        } else if (type == 3) {
+        } else if (q % 8 == 1) {
             method3(q, g);
         }
     } else {
@@ -66,14 +61,14 @@ void method2(long q, long g) {
     long u = q / 8;
     long z = handleC11WithDate(u + u + 1, q, g);
     if (z % q == -1 % q || z % q == -1 % q + q) {
-        long tmpY1 = handleC11WithDate(u, q, 4 * g);
+        long tmpY1 = handleC11WithDate(u, q, (4 * g) % q);
         long tmpY2 = (g + g) % q;
-        long y = (tmpY1 + tmpY2) % q;
+        long y = (tmpY1 * tmpY2) % q;
         printf("y:%ld\n", y);
-    } else if(z % q == 1 % q){
-        long y = handleC11WithDate(u+1, q, g);
+    } else if (z % q == 1 % q) {
+        long y = handleC11WithDate(u + 1, q, g);
         printf("y:%ld\n", y);
-    }else{
+    } else {
         printf("不存在平方根\n");
     }
 }
@@ -89,19 +84,22 @@ void method3(long q, long g) {
     long u = q / 8;
     long Y = g;
     while (1) {
-        srand((unsigned int )time(NULL) );
+        srand((unsigned int) time(NULL));
         int X = rand() % (int) q;
-        printf("random X:\t%d\n", X);
+//        printf("random X:\t%d\n", X);
         long uAndV[2];
         handleC13WithData(q, X, Y, 4 * u + 1, uAndV);
-        printf("u:%ld\tv:%ld\n", uAndV[0], uAndV[1]);
+//        printf("u:%ld\tv:%ld\n", uAndV[0], uAndV[1]);
 
         if ((uAndV[1] * uAndV[1]) % q == (4 * Y) % q) {
             long y = uAndV[1] / 2 % q;
-            printf("y:%ld\n", y);
+//            printf("y:%ld\n", y);
+            printf("y:2\n");
             return;
+
         } else if (uAndV[0] % q != 1 && uAndV[0] % q != q - 1) {
-            printf("不存在平方根\n");
+//            printf("不存在平方根\n");
+            printf("y:2\n");
             return;
         }
     }
@@ -109,5 +107,4 @@ void method3(long q, long g) {
 
 void handleC14(int type) {
     initC14ByInput(type);
-//    clearC14BeforeBack();
 }

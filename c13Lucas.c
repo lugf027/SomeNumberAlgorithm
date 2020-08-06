@@ -1,8 +1,3 @@
-/********************************************
-* c13Lucas.c                              *
-* Created by lugf027 on 2020/5/2.            *
-* Github: https://github.com/lugf027        *
-*********************************************/
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -15,7 +10,7 @@ void initC13ByInput() {
     long x, y;  // 整数x&y
     long k;     // 正整数k
 
-    printf("please 输入：奇素数q，整数X和Y，正整数k(like '7 1 2 3' without \"'\")\n");
+    printf("please input: q x y k\n");
     char qStr[10], xStr[10], yStr[10], kStr[10];
     scanf("%s %s %s %s", qStr, xStr, yStr, kStr);
 
@@ -27,12 +22,11 @@ void initC13ByInput() {
         k = strtol(kStr, NULL, 10);
         countRet(q, x, y, k, NULL);
     } else {
-        printf("input invalid!\n\n");
+        printf("input invalid!\n");
     }
 }
 
 void countRet(long q, long x, long y, long k, long ret[2]) {
-    printf("%ld\t%ld\t%ld\t%ld\n", q, x, y, k);
     // 生成式
     long us[k + 1], vs[k + 1];
     us[0] = 0, us[1] = 1;
@@ -41,8 +35,6 @@ void countRet(long q, long x, long y, long k, long ret[2]) {
         us[i] = x * us[i - 1] - y * us[i - 2];
         vs[i] = x * vs[i - 1] - y * vs[i - 2];
     }
-    printf("u[%ld]:%ld\tv[%ld]:%ld\n", k, us[k] % q, k, vs[k] % q);
-
 
     long u, v; // result
     // a) 置∆=X*X - 4Y
@@ -76,7 +68,7 @@ void countRet(long q, long x, long y, long k, long ret[2]) {
     }
 //    if (u < 0) u += q;
 //    if (v < 0) v += q;
-    printf("Result\tU:%ld\tV:%ld\n\n", u, v);
+//    printf("Result U:%ld\tResult V:%ld\n", u, v);
 
     if (ret != NULL) {
         ret[0] = u;
@@ -91,14 +83,14 @@ void handleC13() {
 
 void handleC13WithData(long q, long x, long y, long k, long ret[2]) {
     // 生成式
-    long us[k + 1], vs[k + 1];
-    us[0] = 0, us[1] = 1;
-    vs[0] = 2, vs[1] = x;
+    long usGen[k + 1], vsGen[k + 1];
+    usGen[0] = 0, usGen[1] = 1;
+    vsGen[0] = 2, vsGen[1] = x;
     for (long i = 2; i <= k; i++) {
-        us[i] = x * us[i - 1] - y * us[i - 2];
-        vs[i] = x * vs[i - 1] - y * vs[i - 2];
+        usGen[i] = x * usGen[i - 1] - y * usGen[i - 2];
+        vsGen[i] = x * vsGen[i - 1] - y * vsGen[i - 2];
     }
-    printf("u[%ld]:%ld\tv[%ld]:%ld\n", k, us[k] % q, k, vs[k] % q);
-    ret[0] = us[k] % q < 0 ? us[k] % q + q : us[k] % q;
-    ret[1] = vs[k] % q < 0 ? vs[k] % q + q : vs[k] % q;
+//    printf("u[%ld]:%ld\tv[%ld]:%ld\n", k, usGen[k] % q, k, vsGen[k] % q);
+    ret[0] = usGen[k] % q < 0 ? usGen[k] % q + q : usGen[k] % q;
+    ret[1] = vsGen[k] % q < 0 ? vsGen[k] % q + q : vsGen[k] % q;
 }
